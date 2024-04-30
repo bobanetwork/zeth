@@ -25,7 +25,7 @@ use zeth::{
 use zeth_guests::*;
 use zeth_lib::{
     builder::{EthereumStrategy, OptimismStrategy},
-    consts::{ETH_MAINNET_CHAIN_SPEC, OP_MAINNET_CHAIN_SPEC},
+    consts::{BOBA_MAINNET_CHAIN_SPEC, ETH_MAINNET_CHAIN_SPEC, OP_MAINNET_CHAIN_SPEC},
 };
 
 #[tokio::main]
@@ -38,6 +38,7 @@ async fn main() -> Result<()> {
     info!("  op-block: {}", Digest::from(OP_BLOCK_ID));
     info!("  op-derive: {}", Digest::from(OP_DERIVE_ID));
     info!("  op-compose: {}", Digest::from(OP_COMPOSE_ID));
+    info!("  boba-block: {}", Digest::from(BOBA_BLOCK_ID));
 
     // execute the command
     let build_args = cli.build_args();
@@ -77,6 +78,19 @@ async fn main() -> Result<()> {
             } else {
                 (OP_DERIVE_ID, rollups::derive_rollup_blocks(&cli).await?)
             }
+        }
+        Network::Boba => {
+            let rpc_url = build_args.boba_rpc_url.clone();
+            (
+                BOBA_BLOCK_ID,
+                build::build_block::<OptimismStrategy>(
+                    &cli,
+                    rpc_url,
+                    &BOBA_MAINNET_CHAIN_SPEC,
+                    BOBA_BLOCK_ELF,
+                )
+                .await?,
+            )
         }
     };
 

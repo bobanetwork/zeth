@@ -97,6 +97,8 @@ pub enum Network {
     Optimism,
     /// Optimism Mainnet as derived from the Ethereum Mainnet
     OptimismDerived,
+    /// Boba Mainnet
+    Boba,
 }
 
 impl fmt::Display for Network {
@@ -130,6 +132,10 @@ pub struct BuildArgs {
     #[clap(short, long, require_equals = true)]
     /// URL of the Optimism RPC node
     pub op_rpc_url: Option<String>,
+
+    #[clap(short, long, require_equals = true)]
+    /// URL of the Optimism RPC node
+    pub boba_rpc_url: Option<String>,
 
     #[clap(short, long, require_equals = true, num_args = 0..=1, default_missing_value = "cache_rpc")]
     /// Cache RPC calls locally; the value specifies the cache directory

@@ -97,6 +97,31 @@ pub static OP_MAINNET_CHAIN_SPEC: Lazy<ChainSpec> = Lazy::new(|| ChainSpec {
     ]),
 });
 
+/// The Optimism mainnet specification.
+pub static BOBA_MAINNET_CHAIN_SPEC: Lazy<ChainSpec> = Lazy::new(|| ChainSpec {
+    chain_id: 288,
+    max_spec_id: SpecId::LATEST,
+    hard_forks: BTreeMap::from([
+        // Tue Apr 16 2024 21:27:59 UTC 2024
+        (SpecId::REGOLITH, ForkCondition::Timestamp(1713302879)),
+        // Canyon is activated Tue Apr 16 2024 21:27:59 UTC 2024
+        (SpecId::CANYON, ForkCondition::Timestamp(1713302879)),
+        // Delta is activated Tue Apr 16 2024 21:27:59 UTC 2024
+        (SpecId::LATEST, ForkCondition::Timestamp(1713302879)),
+        // ECOTONE is activated Tue Apr 16 2024 21:28:00 UTC 2024
+        (SpecId::ECOTONE, ForkCondition::Timestamp(1713302880)),
+    ]),
+    gas_constants: BTreeMap::from([(
+        SpecId::CANYON,
+        Eip1559Constants {
+            base_fee_change_denominator: uint!(250_U256),
+            base_fee_max_increase_denominator: uint!(10_U256),
+            base_fee_max_decrease_denominator: uint!(50_U256),
+            elasticity_multiplier: uint!(6_U256),
+        },
+    )]),
+});
+
 /// The condition at which a fork is activated.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub enum ForkCondition {
